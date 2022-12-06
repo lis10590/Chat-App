@@ -1,7 +1,10 @@
-from flask import Flask
+from flask import Flask, jsonify
 import json
 from flask_cors import CORS
 from bson import ObjectId
+from flask_socketio import SocketIO
+from flask_socketio import join_room, leave_room
+from flask_socketio import send, emit
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -12,8 +15,54 @@ class JSONEncoder(json.JSONEncoder):
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 
 app.json_encoder = JSONEncoder
 
-app.run()
+
+@socketio.on('connect')
+def test_connect(auth):
+    emit('my response', {'data': 'Connected'})
+
+
+@socketio.on('disconnect')
+def test_disconnect():
+    print('Client disconnected')
+
+
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+    room = data['room']
+    join_room(room)
+    send(username + ' has entered the room.', to=room)
+
+
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    send(username + ' has left the room.', to=room)
+
+
+@socketio.on('message')
+def handle_message(data):
+    room = data["room"]
+    emit("message", data, broadcast=True)
+    print(data)
+    # send(data, room=room, broadcast=True)
+
+
+# @socketio.on('recieve_message')
+# def handle_message(data):
+#     room = data["room"]
+#     emit("receive_message", {"data": data}, broadcast=True)
+#     print(data)
+#     send(data, room=room)
+
+
+# app.run()
+socketio.run(app)

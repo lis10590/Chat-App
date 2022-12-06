@@ -1,11 +1,11 @@
 import "bulma/css/bulma.min.css";
 import "./App.css";
-import ChatBar from "./components/ChatBar";
+import ChatLogin from "./components/ChatLogin";
 
 function App() {
   return (
     <div className="App">
-      <ChatBar />
+      <ChatLogin />
     </div>
   );
 }
