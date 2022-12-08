@@ -30,6 +30,7 @@ const ChatBox = (props) => {
   useEffect(() => {
     props.socket.on("message", (data) => {
       console.log(data);
+      console.log(messageList);
       setMessageList((list) => [...list, data]);
     });
   }, [props.socket]);

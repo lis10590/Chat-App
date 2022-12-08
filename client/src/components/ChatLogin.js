@@ -1,7 +1,10 @@
 import io from "socket.io-client";
 import { useState } from "react";
-import Chat from "./Chat";
 import ChatBox from "./ChatBox";
+import { userAddition } from "../store/users";
+import { useDispatch } from "react-redux";
+import { Columns, Column } from "react-bulma-companion";
+import Users from "./Users";
 import "../styles/ChatLogin.css";
 
 const socket = io.connect("http://localhost:5000");
@@ -9,10 +12,17 @@ const ChatLogin = () => {
   const [username, setUsername] = useState("");
   const [room, setRoom] = useState("");
   const [showChat, setShowChat] = useState(false);
+  const dispatch = useDispatch();
 
   const joinRoom = () => {
     if (username !== "" && room !== "") {
-      socket.emit("join_room", room);
+      const userDetails = {
+        username,
+        room,
+      };
+
+      socket.emit("join", userDetails);
+      dispatch(userAddition(userDetails));
       setShowChat(true);
     }
   };
@@ -39,7 +49,13 @@ const ChatLogin = () => {
           <button onClick={joinRoom}>Join A Room</button>
         </div>
       ) : (
-        <ChatBox socket={socket} username={username} room={room} />
+        <Columns>
+          <Column>
+            <Users />
+          </Column>
+          <Column></Column>
+          <ChatBox socket={socket} username={username} room={room} />
+        </Columns>
       )}
     </div>
   );

@@ -19,7 +19,7 @@ const Chat = (props) => {
       };
 
       await props.socket.emit("message", messageData);
-      // setMessageList((list) => [...list, messageData]);
+      setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");
     }
   };
