@@ -3,6 +3,8 @@ import { getUsers, addNewUser } from "../api/users";
 
 const initialUsersState = {
   users: [],
+  username: "",
+  room: "",
   isLoading: false,
   isError: false,
   isSuccess: false,
@@ -60,6 +62,8 @@ const usersSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.users = action.payload.users;
+        state.username = action.payload.username;
+        state.room = action.payload.room;
       })
       .addCase(userAddition.rejected, (state, action) => {
         state.isLoading = false;

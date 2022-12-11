@@ -18,4 +18,6 @@ def get_all_users():
 def add_user():
     user = request.json
     result = users_bl.add_new_user(user)
-    return jsonify(result)
+    response = {"users": result["users"],
+                "username": result["username"], "room": result["room"]}
+    return jsonify(response)

@@ -30,7 +30,7 @@ def test_connect(auth):
 
 @socketio.on('disconnect')
 def test_disconnect():
-    print('Client disconnected')
+    print('client disconnected')
 
 
 @socketio.on('join')

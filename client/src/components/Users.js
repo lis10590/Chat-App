@@ -13,12 +13,12 @@ const Users = () => {
   }, [dispatch]);
   return (
     <Box>
-      <Title>Connected Users</Title>
-      {/* {users.length !== 0
+      <Title size="5">Connected Users</Title>
+      {users.length !== 0
         ? users.map((user) => {
-            return <p>{user.username}</p>;
+            return <p key={user._id}>{user.username}</p>;
           })
-        : null} */}
+        : null}
     </Box>
   );
 };
