@@ -25,3 +25,14 @@ export const getUsers = async () => {
     console.error(err);
   }
 };
+
+export const deleteUser = async (username) => {
+  try {
+    const res = await axios.delete(`${apiUrl}/users/deleteUser`, {
+      data: { username },
+    });
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};

@@ -21,3 +21,12 @@ def add_user():
     response = {"users": result["users"],
                 "username": result["username"], "room": result["room"]}
     return jsonify(response)
+
+# Delete User
+
+
+@users.route("/deleteUser", methods=['DELETE'])
+def delete_user():
+    username = request.json["username"]
+    result = users_bl.delete_user(username)
+    return jsonify(result)

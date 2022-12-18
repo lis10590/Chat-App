@@ -12,3 +12,7 @@ class UsersBL:
     def add_new_user(self, user):
         new_user = self.__users_dal.add_new_user(user)
         return new_user
+
+    def delete_user(self, username):
+        id = self.__users_dal.delete_user(username)
+        return id

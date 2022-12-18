@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getUsers, addNewUser } from "../api/users";
+import { getUsers, addNewUser, deleteUser } from "../api/users";
 
 const initialUsersState = {
   users: [],
@@ -33,6 +33,23 @@ export const getAllUsers = createAsyncThunk(
   async (thunkAPI) => {
     try {
       return await getUsers();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const deleteOneUser = createAsyncThunk(
+  "users/deleteUser",
+  async (username, thunkAPI) => {
+    try {
+      return await deleteUser(username);
     } catch (error) {
       const message =
         (error.response &&
@@ -80,6 +97,20 @@ const usersSlice = createSlice({
       })
 
       .addCase(getAllUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteOneUser.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteOneUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = state.users.filter((user) => user._id !== action.payload);
+      })
+
+      .addCase(deleteOneUser.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

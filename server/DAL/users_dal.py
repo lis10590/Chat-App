@@ -20,3 +20,9 @@ class UsersDal:
         room = user["room"]
         users = list(self.__collection.find({}))
         return {"users": users, "username": username, "room": room}
+
+    def delete_user(self, username):
+        user = self.__collection.find_one({"username": username})
+        id = user["_id"]
+        self.__collection.delete_one({"username": username})
+        return id
