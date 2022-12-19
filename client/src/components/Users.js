@@ -26,7 +26,7 @@ const Users = () => {
   useEffect(() => {
     setInterval(() => {
       dispatch(getAllUsers());
-    }, 5000);
+    }, 2000);
   }, [dispatch]);
   return (
     <div>
