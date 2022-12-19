@@ -1,7 +1,7 @@
 import { Box, Title, Button } from "react-bulma-companion";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAllUsers, getAllUsers } from "../store/users";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { deleteOneUser } from "../store/users";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,8 @@ const Users = () => {
   const users = useSelector(selectAllUsers);
   const username = useSelector((state) => state.users.username);
   console.log(users);
+
+  const [chatRoomUsers, setChatRoomUsers] = useState([]);
 
   const onDisconnect = (id) => {
     // socket.disconnect();
@@ -22,7 +24,9 @@ const Users = () => {
   };
 
   useEffect(() => {
-    dispatch(getAllUsers());
+    setInterval(() => {
+      dispatch(getAllUsers());
+    }, 5000);
   }, [dispatch]);
   return (
     <div>

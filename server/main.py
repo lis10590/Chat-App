@@ -56,15 +56,11 @@ def handle_message(data):
     # join_room(room)
     emit("message", data, broadcast=True, to=room)
     print(data)
-    # send(data, room=room, broadcast=True)
 
 
-# @socketio.on('recieve_message')
-# def handle_message(data):
-#     room = data["room"]
-#     emit("receive_message", {"data": data}, broadcast=True)
-#     print(data)
-#     send(data, room=room)
+@socketio.on("chatroom_users")
+def chatroom_room(data):
+    emit("chatroom_users", data)
 
 
 # app.run()
