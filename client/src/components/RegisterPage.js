@@ -34,8 +34,10 @@ const RegisterPage = () => {
   };
 
   const createAccount = () => {
-    dispatch(regUserAddition(user));
-    navigate("/userPage");
+    if (user.password === user.password2) {
+      dispatch(regUserAddition(user));
+      navigate("/userPage");
+    }
   };
 
   return (
@@ -93,14 +95,18 @@ const RegisterPage = () => {
         </Field>
         <Field>
           <Control>
-            <Button onClick={createAccount} color="primary">
-              Create Account
-            </Button>
+            <div className="is-flex is-justify-content-center">
+              <Button onClick={createAccount} color="primary">
+                Create Account
+              </Button>
+            </div>
           </Control>
         </Field>
-        <Field component={Link} to="/">
-          Already Registered? Go to Login Page
-        </Field>
+        <div className="is-flex is-justify-content-center">
+          <Field component={Link} to="/">
+            Already Registered? Go to Login Page
+          </Field>
+        </div>
       </Box>
     </div>
   );

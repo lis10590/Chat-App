@@ -1,16 +1,46 @@
-import { Navbar } from "react-bulma-companion";
+import { Navbar, Box } from "react-bulma-companion";
+import { useState } from "react";
+import Chats from "./Chats";
 
 const UserPage = () => {
+  const [chatsPage, setChatPage] = useState(true);
+  const [groupsPage, setGroupsPage] = useState(false);
+
+  const onChatPage = () => {
+    setChatPage(true);
+    setGroupsPage(false);
+  };
+
+  const onGroupsPage = () => {
+    setGroupsPage(true);
+    setChatPage(false);
+  };
+
   return (
-    <div>
-      <Navbar>
-        <Navbar.Menu>
-          <Navbar.Start>
-            <Navbar.Item tab>Chats</Navbar.Item>
-            <Navbar.Item tab>Groups</Navbar.Item>
-          </Navbar.Start>
-        </Navbar.Menu>
-      </Navbar>
+    <div className="is-flex is-justify-content-center">
+      <Box style={{ width: "50rem", marginTop: "5rem" }}>
+        <Navbar>
+          <Navbar.Menu>
+            <Navbar.Start>
+              <Navbar.Item
+                onClick={onChatPage}
+                tab
+                active={chatsPage ? true : false}
+              >
+                Chats
+              </Navbar.Item>
+              <Navbar.Item
+                onClick={onGroupsPage}
+                tab
+                active={groupsPage ? true : false}
+              >
+                Groups
+              </Navbar.Item>
+            </Navbar.Start>
+          </Navbar.Menu>
+        </Navbar>
+        {chatsPage ? <Chats /> : null}
+      </Box>
     </div>
   );
 };

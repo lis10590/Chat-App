@@ -42,7 +42,7 @@ const LoginPage = () => {
       <Title>Chat App Login</Title>
       <Box
         style={{
-          maxWidth: "25rem",
+          width: "20rem",
           marginTop: "2rem",
           marginLeft: "auto",
           marginRight: "auto",
@@ -78,14 +78,18 @@ const LoginPage = () => {
         </Field>
         <Field>
           <Control>
-            <Button onClick={onLoginClick} color="primary">
-              Login
-            </Button>
+            <div className="is-flex is-justify-content-center">
+              <Button onClick={onLoginClick} color="primary">
+                Login
+              </Button>
+            </div>
           </Control>
         </Field>
-        <Field component={Link} to="/registerPage">
-          New User? Create Account
-        </Field>
+        <div className="is-flex is-justify-content-center">
+          <Field component={Link} to="/registerPage">
+            New User? Create Account
+          </Field>
+        </div>
       </Box>
     </div>
   );

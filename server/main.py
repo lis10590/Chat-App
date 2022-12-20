@@ -7,6 +7,8 @@ from flask_socketio import join_room, leave_room
 from flask_socketio import send, emit
 from routers.users_router import users
 from routers.registered_router import registered
+from routers.groups_router import groups
+
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -65,5 +67,6 @@ def chatroom_room(data):
 
 # app.run()
 app.register_blueprint(users, url_prefix="/users")
-app.register_blueprint(registered,url_prefix="/registered")
+app.register_blueprint(registered, url_prefix="/registered")
+app.register_blueprint(groups, url_prefix="/groups")
 socketio.run(app)

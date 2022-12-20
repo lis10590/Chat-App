@@ -4,7 +4,7 @@
   background: #fff;
   color: #212121;
   font-family: "Open Sans", sans-serif;
-  display: grid;
+  /* display: grid; */
   place-items: center;
 }
 
