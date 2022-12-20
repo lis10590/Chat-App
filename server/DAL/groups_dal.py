@@ -13,6 +13,11 @@ class GroupsDal:
         groups = list(self.__collection.find({}))
         return groups
 
+    def get_members_from_group(self,id):
+        group = self.__collection.find_one({"_id": ObjectId(id)}) 
+        members = group["members"]
+        return members  
+
     def add_new_group(self, group):
         self.__collection.insert_one(
             {"name": group["name"]})

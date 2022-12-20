@@ -35,6 +35,22 @@ export const getGroups = async () => {
   }
 };
 
+export const getMembersOfGroup = async (id) => {
+  try {
+    const res = await axios.get(`${apiUrl}/groups/getMembers`, {
+      data: { id },
+      // headers: {
+      //   Authorization: "Bearer".concat(" ", sessionStorage.getItem("token")),
+      // },
+    });
+    console.log(res.data);
+
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const deleteGroup = async (id) => {
   try {
     const res = await axios.delete(`${apiUrl}/groups/deleteGroup`, {

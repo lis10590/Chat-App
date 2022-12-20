@@ -13,6 +13,10 @@ class UsersDal:
         users = list(self.__collection.find({}))
         return users
 
+    def get_user(self,id):
+        user = self.__collection.find_one({"_id": ObjectId(id)}) 
+        return user   
+
     def add_new_user(self, user):
         self.__collection.insert_one(
             {"username": user["username"], "room": user["room"]})

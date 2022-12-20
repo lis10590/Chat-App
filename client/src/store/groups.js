@@ -4,10 +4,12 @@ import {
   addNewGroup,
   addNewMemberToGroup,
   deleteGroup,
+  getMembersOfGroup,
 } from "../api/groups";
 
 const initialGroupsState = {
   groups: [],
+  members: [],
   isLoading: false,
   isError: false,
   isSuccess: false,
@@ -53,6 +55,23 @@ export const getAllGroups = createAsyncThunk(
   async (thunkAPI) => {
     try {
       return await getGroups();
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const getMembers = createAsyncThunk(
+  "groups/getMembers",
+  async (id, thunkAPI) => {
+    try {
+      return await getMembersOfGroup(id);
     } catch (error) {
       const message =
         (error.response &&
@@ -125,10 +144,25 @@ const groupsSlice = createSlice({
       .addCase(getAllGroups.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.groups = action.payload.users;
+        state.groups = action.payload;
       })
 
       .addCase(getAllGroups.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      .addCase(getMembers.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getMembers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.members = action.payload;
+      })
+
+      .addCase(getMembers.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

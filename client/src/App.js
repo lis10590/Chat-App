@@ -6,6 +6,7 @@ import ChatPage from "./components/ChatPage";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import UserPage from "./components/UserPage";
+import GroupPage from "./components/GroupPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="registerPage" element={<RegisterPage />} />
         <Route path="/userPage" element={<UserPage />} />
         <Route path="/chat" element={<ChatPage />} />
+        <Route path="/groups/:groupId" element={<GroupPage />} />
       </Routes>
     </div>
   );

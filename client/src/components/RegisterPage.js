@@ -41,8 +41,10 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <Title>Chat App Register Page</Title>
+    <div className="mt-6">
+      <Title className="is-flex is-justify-content-center">
+        Chat App Register Page
+      </Title>
       <Box
         style={{
           maxWidth: "25rem",

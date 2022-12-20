@@ -1,6 +1,7 @@
 import { Navbar, Box } from "react-bulma-companion";
 import { useState } from "react";
 import Chats from "./Chats";
+import Groups from "./Groups";
 
 const UserPage = () => {
   const [chatsPage, setChatPage] = useState(true);
@@ -39,7 +40,7 @@ const UserPage = () => {
             </Navbar.Start>
           </Navbar.Menu>
         </Navbar>
-        {chatsPage ? <Chats /> : null}
+        {chatsPage ? <Chats /> : <Groups />}
       </Box>
     </div>
   );

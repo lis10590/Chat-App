@@ -38,8 +38,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
-      <Title>Chat App Login</Title>
+    <div className="mt-6">
+      <Title className="is-flex is-justify-content-center">
+        Chat App Login
+      </Title>
       <Box
         style={{
           width: "20rem",

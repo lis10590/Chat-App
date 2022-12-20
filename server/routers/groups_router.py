@@ -12,6 +12,12 @@ def get_all_groups():
     groups = groups_bl.get_groups()
     return jsonify(groups)
 
+@groups.route("/getMembers", methods=['GET'])
+def get_members_of_group():
+    id = request.json
+    members = groups_bl.get_members_from_group(id)
+    return jsonify(members)    
+
 
 @groups.route("/newGroup", methods=['POST'])
 def add_group():
