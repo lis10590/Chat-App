@@ -30,7 +30,8 @@ def add_group():
 def add_member_to_group():
     obj = request.json
     result = groups_bl.add_member_to_group(obj)
-    return jsonify(result)
+    response = {"groups":result["groups"],"group_members":result["group_members"]}
+    return jsonify(response)
 
 
 @groups.route("/deleteGroup", methods=['DELETE'])

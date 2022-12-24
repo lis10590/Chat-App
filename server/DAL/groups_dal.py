@@ -19,17 +19,24 @@ class GroupsDal:
         return members  
 
     def add_new_group(self, group):
-        self.__collection.insert_one(
-            {"name": group["name"]})
-        groups = list(self.__collection.find({}))
-        return groups
+        if len(group["members"]) == 0:
+            self.__collection.insert_one(
+            {"name": group["name"],"members":[],"profile_pic":"https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"})
+            groups = list(self.__collection.find({}))
+            return groups
+        else:
+            self.__collection.insert_one(
+            {"name": group["name"],"members":group["members"],"profile_pic":"https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"})
+            groups = list(self.__collection.find({}))
+            return groups     
 
     def add_member_to_group(self, obj):
 
         self.__collection.update_one({"_id": ObjectId(obj["id"])}, {
                                      "$push": {"members": obj["user"]}})
+        group = self.__collection.find_one({"_id": ObjectId(obj["id"])})                             
         groups = list(self.__collection.find({}))
-        return groups
+        return {"groups":groups,"group_members":group["members"]}
 
     def delete_group(self, id):
         self.__collection.delete_one({"_id": ObjectId(id)})

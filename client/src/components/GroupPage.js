@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGroups, selectAllGroups } from "../store/groups";
 import { getAllUsers, selectAllUsers } from "../store/users";
@@ -27,6 +27,8 @@ const GroupPage = () => {
   let [group] = groups.filter((group) => group._id === groupId);
   console.log(group);
 
+  const [modal, setModal] = useState(false);
+
   useEffect(() => {
     dispatch(getAllGroups());
     dispatch(getAllUsers());
@@ -49,7 +51,7 @@ const GroupPage = () => {
       <Box style={{ width: "50rem", marginTop: "5rem" }}>
         <Columns>
           <Column size="two-fifths">
-            <Title size="5">Members</Title>
+            <Title size="5">{group.name}-Members</Title>
             <Button color="primary" rounded size="small" className="mb-4">
               +
             </Button>

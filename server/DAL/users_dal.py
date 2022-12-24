@@ -19,7 +19,7 @@ class UsersDal:
 
     def add_new_user(self, user):
         self.__collection.insert_one(
-            {"username": user["username"], "room": user["room"]})
+            {"username": user["username"], "room": user["room"],"profile_pic":user["profile_pic"]})
         username = user["username"]
         room = user["room"]
         users = list(self.__collection.find({}))

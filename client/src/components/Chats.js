@@ -1,7 +1,7 @@
 import { Panel } from "react-bulma-companion";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers, selectAllUsers } from "../store/users";
+import { getAllUsers, selectAllUsers, userAddition } from "../store/users";
 
 const Chats = () => {
   const dispatch = useDispatch();
@@ -10,6 +10,8 @@ const Chats = () => {
   useEffect(() => {
     dispatch(getAllUsers());
   }, [dispatch]);
+
+  const addUser = () => {};
 
   return (
     <Panel>

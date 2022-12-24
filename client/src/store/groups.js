@@ -10,6 +10,7 @@ import {
 const initialGroupsState = {
   groups: [],
   members: [],
+  addedMembers: [],
   isLoading: false,
   isError: false,
   isSuccess: false,
@@ -131,7 +132,8 @@ const groupsSlice = createSlice({
       .addCase(memberAddition.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.groups = action.payload;
+        state.groups = action.payload.groups;
+        state.addedMembers = action.payload.group_members;
       })
       .addCase(memberAddition.rejected, (state, action) => {
         state.isLoading = false;
