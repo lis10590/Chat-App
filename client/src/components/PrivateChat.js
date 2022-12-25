@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import ChatBox from "./ChatBox";
+import { socket } from "../api/socket";
 
 const PrivateChat = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const PrivateChat = () => {
           <div>{user.username}</div>
         </Card.Header>
         <Card.Content>
-          <ChatBox />
+          <ChatBox socket={socket} id={userId} />
         </Card.Content>
       </Card>
     </div>
