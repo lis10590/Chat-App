@@ -17,6 +17,7 @@ import {
 } from "react-bulma-companion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import AddMember from "./AddMember";
 
 const GroupPage = () => {
   let { groupId } = useParams();
@@ -33,6 +34,14 @@ const GroupPage = () => {
     dispatch(getAllGroups());
     dispatch(getAllUsers());
   }, [dispatch]);
+
+  const openModal = () => {
+    setModal(true);
+  };
+
+  const onClickDelete = () => {
+    setModal(false);
+  };
 
   const getGroupMembers = () => {
     let members = [];
@@ -52,13 +61,19 @@ const GroupPage = () => {
         <Columns>
           <Column size="two-fifths">
             <Title size="5">{group.name}-Members</Title>
-            <Button color="primary" rounded size="small" className="mb-4">
+            <Button
+              color="primary"
+              rounded
+              size="small"
+              className="mb-4"
+              onClick={openModal}
+            >
               +
             </Button>
             <Panel>
-              {getGroupMembers().map((member) => {
+              {getGroupMembers().map((member, index) => {
                 return (
-                  <Panel.Block>
+                  <Panel.Block key={index}>
                     <img src={member.profile_pic} style={{ height: "2rem" }} />
                     {member.username}
                   </Panel.Block>
@@ -79,6 +94,7 @@ const GroupPage = () => {
           </Column>
         </Columns>
       </Box>
+      <AddMember modal={modal} onDelete={onClickDelete} id={groupId} />
     </div>
   );
 };

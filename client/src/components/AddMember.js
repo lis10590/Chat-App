@@ -4,6 +4,7 @@ import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { getAllUsers, selectAllUsers } from "../store/users";
 import { useDispatch, useSelector } from "react-redux";
+import { memberAddition } from "../store/groups";
 
 const AddMember = (props) => {
   const [dropdown, setDropdown] = useState(false);
@@ -23,13 +24,37 @@ const AddMember = (props) => {
     setTitle(e.target.innerHTML);
     setDropdown(false);
   };
+
+  const onClickDeleteButton = () => {
+    props.onDelete();
+    setTitle("Members");
+  };
+
+  const getMemberId = () => {
+    for (const user of users) {
+      if (user.username === title) {
+        return user._id;
+      }
+    }
+  };
+
+  const onAddMember = () => {
+    const obj = {
+      id: props.id,
+      user: getMemberId(),
+    };
+
+    dispatch(memberAddition(obj));
+    props.onDelete();
+  };
+
   return (
     <Modal active={props.modal ? true : false}>
       <Modal.Background />
       <Modal.Card style={{ height: "25rem" }}>
         <Modal.CardHead>
           <Modal.CardTitle>Add Member</Modal.CardTitle>
-          <Delete onClick={props.onDelete} />
+          <Delete onClick={onClickDeleteButton} />
         </Modal.CardHead>
         <Modal.CardBody>
           <Dropdown active={dropdown ? true : false}>
@@ -63,8 +88,10 @@ const AddMember = (props) => {
           </Dropdown>
         </Modal.CardBody>
         <Modal.CardFoot>
-          <Button color="success">Add Member</Button>
-          <Button onClick={props.onDelete}>Cancel</Button>
+          <Button color="success" onClick={onAddMember}>
+            Add Member
+          </Button>
+          <Button onClick={onClickDeleteButton}>Cancel</Button>
         </Modal.CardFoot>
       </Modal.Card>
     </Modal>

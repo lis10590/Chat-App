@@ -13,20 +13,32 @@ class UsersDal:
         users = list(self.__collection.find({}))
         return users
 
-    def get_user(self,id):
-        user = self.__collection.find_one({"_id": ObjectId(id)}) 
-        return user   
+    def get_user(self, id):
+        user = self.__collection.find_one({"_id": ObjectId(id)})
+        return user
 
     def add_new_user(self, user):
         self.__collection.insert_one(
-            {"username": user["username"], "room": user["room"],"profile_pic":user["profile_pic"]})
+            {"username": user["username"], "password": user["password"], "rooms": [], "profile_pic": "https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"})
         username = user["username"]
-        room = user["room"]
+        rooms = user["rooms"]
         users = list(self.__collection.find({}))
-        return {"users": users, "username": username, "room": room}
+        return {"users": users, "username": username, "rooms": rooms}
 
     def delete_user(self, username):
         user = self.__collection.find_one({"username": username})
         id = user["_id"]
         self.__collection.delete_one({"username": username})
         return id
+
+    def update_rooms(self, user):
+        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
+            "$push": {"rooms": user["room"]}})
+        users = list(self.__collection.find({}))
+        return users
+
+    def update_profile_pic(self, user):
+        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
+            "$push": {"profile_pic": user["profile_pic"]}})
+        users = list(self.__collection.find({}))
+        return users

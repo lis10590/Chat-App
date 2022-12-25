@@ -16,3 +16,11 @@ class UsersBL:
     def delete_user(self, username):
         id = self.__users_dal.delete_user(username)
         return id
+
+    def update_rooms(self, user):
+        users = self.__users_dal.update_rooms(user)
+        return users
+
+    def update_profile_pic(self, user):
+        users = self.__users_dal.update_profile_pic(user)
+        return users

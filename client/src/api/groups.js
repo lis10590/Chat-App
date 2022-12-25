@@ -13,7 +13,7 @@ export const addNewGroup = async (group) => {
 
 export const addNewMemberToGroup = async (obj) => {
   try {
-    const res = await axios.post(`${apiUrl}/groups/addMember`, obj);
+    const res = await axios.put(`${apiUrl}/groups/addMember`, obj);
     return res.data;
   } catch (err) {
     console.error(err);

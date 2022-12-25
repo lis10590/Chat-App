@@ -30,3 +30,10 @@ def delete_user():
     username = request.json["username"]
     result = users_bl.delete_user(username)
     return jsonify(result)
+
+
+@users.route("/updateRoom", methods=['PUT'])
+def update_room():
+    user = request.json
+    result = users_bl.update_rooms(user)
+    return jsonify(result)

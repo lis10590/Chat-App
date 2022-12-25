@@ -7,6 +7,7 @@ import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import UserPage from "./components/UserPage";
 import GroupPage from "./components/GroupPage";
+import PrivateChat from "./components/PrivateChat";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/userPage" element={<UserPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/groups/:groupId" element={<GroupPage />} />
+        <Route path="/chats/:userId" element={<PrivateChat />} />
       </Routes>
     </div>
   );
