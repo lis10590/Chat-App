@@ -10,6 +10,7 @@ const PrivateChat = () => {
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
   let { userId } = useParams();
+  console.log(userId);
   let [user] = users.filter((user) => user._id === userId);
 
   useEffect(() => {

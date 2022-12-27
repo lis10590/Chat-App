@@ -1,13 +1,16 @@
 import { Panel } from "react-bulma-companion";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllUsers, selectAllUsers, userAddition } from "../store/users";
-import { Link, useParams } from "react-router-dom";
+import { getAllUsers, selectAllUsers } from "../store/users";
+import { useParams, useNavigate } from "react-router-dom";
+import { socket } from "../api/socket";
 
 const Chats = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const users = useSelector(selectAllUsers);
   let userId = useParams();
+  const user = useSelector((state) => state.auth.user);
   console.log(userId);
 
   useEffect(() => {
@@ -16,12 +19,25 @@ const Chats = () => {
 
   const addUser = () => {};
 
+  const onUserClick = (username, userId) => {
+    const data = {
+      username: user.username.split("@")[0],
+      room: username,
+    };
+    socket.emit("join", data);
+    navigate(`/chats/${userId}`);
+  };
+
   return (
     <Panel>
       {users.map((user) => {
         userId = user._id;
         return (
-          <Panel.Block key={user._id} component={Link} to={`/chats/${userId}`}>
+          <Panel.Block
+            key={user._id}
+            component="a"
+            onClick={() => onUserClick(user.username, user._id)}
+          >
             <img src={user.profile_pic} style={{ height: "5rem" }} />
             {user.username}
           </Panel.Block>

@@ -8,6 +8,8 @@ from flask_socketio import send, emit
 from routers.users_router import users
 from routers.registered_router import registered
 from routers.groups_router import groups
+from routers.auth_router import auth
+from flask_jwt_extended import JWTManager
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -19,6 +21,7 @@ class JSONEncoder(json.JSONEncoder):
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
+jwt = JWTManager(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 
@@ -69,4 +72,6 @@ def chatroom_room(data):
 app.register_blueprint(users, url_prefix="/users")
 app.register_blueprint(registered, url_prefix="/registered")
 app.register_blueprint(groups, url_prefix="/groups")
+app.register_blueprint(auth, url_prefix="/auth")
+
 socketio.run(app)

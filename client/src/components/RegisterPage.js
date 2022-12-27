@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { regUserAddition } from "../store/registered";
+import { userRegistration } from "../store/auth";
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const RegisterPage = () => {
 
   const createAccount = () => {
     if (user.password === user.password2) {
-      dispatch(regUserAddition(user));
+      dispatch(userRegistration(user));
       navigate("/userPage");
     }
   };

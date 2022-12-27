@@ -3,14 +3,17 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGroups, selectAllGroups } from "../store/groups";
 import { getAllUsers, selectAllUsers } from "../store/users";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import AddGroup from "./AddGroup";
+import { socket } from "../api/socket";
 
 const Groups = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const groups = useSelector(selectAllGroups);
   const users = useSelector(selectAllUsers);
   let groupId = useParams();
+  const user = useSelector((state) => state.auth.user);
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
@@ -26,6 +29,16 @@ const Groups = () => {
     setModal(false);
   };
 
+  const onClickGroup = (id) => {
+    const data = {
+      username: user.username.split("@")[0],
+      room: id,
+    };
+
+    socket.emit("join", data);
+    navigate(`/groups/${groupId}`);
+  };
+
   return (
     <div>
       <Button className="mb-6 mt-4" color="primary" rounded onClick={openModal}>
@@ -37,8 +50,8 @@ const Groups = () => {
           return (
             <Panel.Block
               key={group._id}
-              component={Link}
-              to={`/groups/${groupId}`}
+              component="a"
+              onClick={() => onClickGroup(group._id)}
             >
               <img style={{ height: "5rem" }} src={group.profile_pic} />
               {group.name}

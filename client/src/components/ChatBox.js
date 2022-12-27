@@ -9,31 +9,31 @@ const ChatBox = (props) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
-  // const sendMessage = async () => {
-  //   if (currentMessage !== "") {
-  //     const messageData = {
-  //       room: props.room,
-  //       author: props.username,
-  //       message: currentMessage,
-  //       time:
-  //         new Date(Date.now()).getHours() +
-  //         ":" +
-  //         new Date(Date.now()).getMinutes(),
-  //     };
+  const sendMessage = async () => {
+    if (currentMessage !== "") {
+      const messageData = {
+        room: props.room,
+        author: props.username,
+        message: currentMessage,
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
 
-  //     await props.socket.emit("message", messageData);
-  //     // setMessageList((list) => [...list, messageData]);
-  //     setCurrentMessage("");
-  //   }
-  // };
+      await props.socket.emit("message", messageData);
+      // setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
+    }
+  };
 
-  // useEffect(() => {
-  //   props.socket.on("message", (data) => {
-  //     console.log(data);
-  //     console.log(messageList);
-  //     setMessageList((list) => [...list, data]);
-  //   });
-  // }, [props.socket]);
+  useEffect(() => {
+    props.socket.on("message", (data) => {
+      console.log(data);
+      console.log(messageList);
+      setMessageList((list) => [...list, data]);
+    });
+  }, [props.socket]);
 
   return (
     // <Box className="chat-window">
@@ -63,12 +63,12 @@ const ChatBox = (props) => {
             type="text"
             value={currentMessage}
             placeholder="Hey..."
-            // onChange={(event) => {
-            //   setCurrentMessage(event.target.value);
-            // }}
-            // onKeyPress={(event) => {
-            //   event.key === "Enter" && sendMessage();
-            // }}
+            onChange={(event) => {
+              setCurrentMessage(event.target.value);
+            }}
+            onKeyPress={(event) => {
+              event.key === "Enter" && sendMessage();
+            }}
           />
           {/* <input
               type="text"

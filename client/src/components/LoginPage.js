@@ -10,13 +10,20 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { regUserAddition } from "../store/registered";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogin } from "../store/auth";
+import { socket } from "../api/socket";
+import { getAllUsers, selectAllUsers } from "../store/users";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const users = useSelector(selectAllUsers);
+
+  useEffect(() => {
+    dispatch(getAllUsers());
+  }, [dispatch]);
 
   const [user, setUser] = useState({
     username: "",
@@ -33,7 +40,13 @@ const LoginPage = () => {
   };
 
   const onLoginClick = () => {
-    dispatch(regUserAddition(user));
+    dispatch(userLogin(user));
+    const obj = {
+      username: user.username.split("@")[0],
+      room: user.username,
+    };
+    socket.emit("join", obj);
+
     navigate("/userPage");
   };
 

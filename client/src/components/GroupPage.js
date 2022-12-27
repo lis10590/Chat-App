@@ -12,12 +12,15 @@ import {
   Panel,
   Button,
   Control,
-  Icon,
+  Container,
   Field,
 } from "react-bulma-companion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import AddMember from "./AddMember";
+import { socket } from "../api/socket";
+import ScrollToBottom from "react-scroll-to-bottom";
+import "../styles/Chat.css";
 
 const GroupPage = () => {
   let { groupId } = useParams();
@@ -27,13 +30,38 @@ const GroupPage = () => {
   const users = useSelector(selectAllUsers);
   let [group] = groups.filter((group) => group._id === groupId);
   console.log(group);
-
+  const user = useSelector((state) => state.auth.user);
   const [modal, setModal] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState("");
+  const [messageList, setMessageList] = useState([]);
 
   useEffect(() => {
     dispatch(getAllGroups());
     dispatch(getAllUsers());
-  }, [dispatch]);
+    socket.on("message", (data) => {
+      console.log(data);
+      console.log(messageList);
+      setMessageList((list) => [...list, data]);
+    });
+  }, [dispatch, socket]);
+
+  const sendMessage = async () => {
+    if (currentMessage !== "") {
+      const messageData = {
+        room: groupId,
+        author: user.username.split("@")[0],
+        message: currentMessage,
+        time:
+          new Date(Date.now()).getHours() +
+          ":" +
+          new Date(Date.now()).getMinutes(),
+      };
+
+      await socket.emit("message", messageData);
+      // setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
+    }
+  };
 
   const openModal = () => {
     setModal(true);
@@ -83,14 +111,54 @@ const GroupPage = () => {
           </Column>
 
           <Column className="is-flex is-flex-direction-column is-justify-content-flex-end is-align-content-stretch">
-            <Field>
-              <Control iconsRight>
-                <Input type="text" />
-                <Icon size="small" align="right">
-                  <FontAwesomeIcon icon={faPaperPlane} />
-                </Icon>
-              </Control>
-            </Field>
+            <Box className="chat-window">
+              <Container className="chat-body">
+                <ScrollToBottom>
+                  {messageList.map((messageContent, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="message"
+                        id={
+                          user.username.split("@")[0] === messageContent.author
+                            ? "you"
+                            : "other"
+                        }
+                      >
+                        <div>
+                          <div className="message-content">
+                            <p>{messageContent.message}</p>
+                          </div>
+                          <div className="message-meta">
+                            <p id="time">{messageContent.time}</p>
+                            <p id="author">{messageContent.author}</p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                  <div className="chat-footer">
+                    <Input
+                      type="text"
+                      onChange={(event) => {
+                        setCurrentMessage(event.target.value);
+                      }}
+                      onKeyPress={(event) => {
+                        event.key === "Enter" && sendMessage();
+                      }}
+                    />
+                    <Button
+                      className="ml-2"
+                      color="primary"
+                      rounded
+                      onClick={sendMessage}
+                    >
+                      <FontAwesomeIcon icon={faPaperPlane} />
+                    </Button>
+                  </div>
+                </ScrollToBottom>
+              </Container>
+            </Box>
           </Column>
         </Columns>
       </Box>
