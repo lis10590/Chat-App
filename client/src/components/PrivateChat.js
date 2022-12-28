@@ -25,7 +25,7 @@ const PrivateChat = () => {
           <div>{user.username}</div>
         </Card.Header>
         <Card.Content>
-          <ChatBox socket={socket} id={userId} />
+          <ChatBox socket={socket} id={userId} room={user.username} />
         </Card.Content>
       </Card>
     </div>

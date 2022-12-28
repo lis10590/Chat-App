@@ -14,7 +14,7 @@ class AuthDal:
 
     def register_user(self, username, password):
         self.__collection.insert_one(
-            {"username": username, "password": password, "rooms": [], "profile_pic": "https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"})
+            {"username": username, "password": password, "contacts": [], "groups": [], "profile_pic": "https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"})
         new_user = self.__collection.find_one({"username": username})
         return new_user
 

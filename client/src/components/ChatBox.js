@@ -3,17 +3,20 @@ import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import { useSelector } from "react-redux";
 import "../styles/Chat.css";
 
 const ChatBox = (props) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
+  const user = useSelector((state) => state.auth.user);
+
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const messageData = {
         room: props.room,
-        author: props.username,
+        author: user.username.split("@")[0],
         message: currentMessage,
         time:
           new Date(Date.now()).getHours() +
@@ -36,41 +39,45 @@ const ChatBox = (props) => {
   }, [props.socket]);
 
   return (
-    // <Box className="chat-window">
-    <Container className="chat-body">
-      <ScrollToBottom>
-        {messageList.map((messageContent, index) => {
-          return (
-            <div
-              key={index}
-              className="message"
-              id={props.username === messageContent.author ? "you" : "other"}
-            >
-              <div>
-                <div className="message-content">
-                  <p>{messageContent.message}</p>
-                </div>
-                <div className="message-meta">
-                  <p id="time">{messageContent.time}</p>
-                  <p id="author">{messageContent.author}</p>
+    <Box className="chat-window">
+      <Container className="chat-body">
+        <ScrollToBottom>
+          {messageList.map((messageContent, index) => {
+            return (
+              <div
+                key={index}
+                className="message"
+                id={
+                  user.username.split("@")[0] === messageContent.author
+                    ? "you"
+                    : "other"
+                }
+              >
+                <div>
+                  <div className="message-content">
+                    <p>{messageContent.message}</p>
+                  </div>
+                  <div className="message-meta">
+                    <p id="time">{messageContent.time}</p>
+                    <p id="author">{messageContent.author}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-        <div className="chat-footer">
-          <Input
-            type="text"
-            value={currentMessage}
-            placeholder="Hey..."
-            onChange={(event) => {
-              setCurrentMessage(event.target.value);
-            }}
-            onKeyPress={(event) => {
-              event.key === "Enter" && sendMessage();
-            }}
-          />
-          {/* <input
+            );
+          })}
+          <div className="chat-footer">
+            <Input
+              type="text"
+              value={currentMessage}
+              placeholder="Hey..."
+              onChange={(event) => {
+                setCurrentMessage(event.target.value);
+              }}
+              onKeyPress={(event) => {
+                event.key === "Enter" && sendMessage();
+              }}
+            />
+            {/* <input
               type="text"
               value={currentMessage}
               placeholder="Hey..."
@@ -81,17 +88,13 @@ const ChatBox = (props) => {
                 event.key === "Enter" && sendMessage();
               }}
             /> */}
-          <Button
-            rounded
-            size="normal"
-            color="primary" /*onClick={sendMessage}*/
-          >
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </Button>
-        </div>
-      </ScrollToBottom>
-    </Container>
-    /* </Box> */
+            <Button rounded size="normal" color="primary" onClick={sendMessage}>
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </Button>
+          </div>
+        </ScrollToBottom>
+      </Container>
+    </Box>
   );
 };
 

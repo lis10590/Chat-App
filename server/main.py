@@ -59,7 +59,7 @@ def on_leave(data):
 def handle_message(data):
     room = data["room"]
     # join_room(room)
-    emit("message", data, broadcast=True, to=room)
+    emit("message", data, to=room)
     print(data)
 
 
