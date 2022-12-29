@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllGroups, selectAllGroups } from "../store/groups";
@@ -11,12 +11,12 @@ import {
   Title,
   Panel,
   Button,
-  Control,
+  Buttons,
   Container,
-  Field,
 } from "react-bulma-companion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import AddMember from "./AddMember";
 import { socket } from "../api/socket";
 import ScrollToBottom from "react-scroll-to-bottom";
@@ -24,12 +24,11 @@ import "../styles/Chat.css";
 
 const GroupPage = () => {
   let { groupId } = useParams();
-  console.log(groupId);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const groups = useSelector(selectAllGroups);
   const users = useSelector(selectAllUsers);
   let [group] = groups.filter((group) => group._id === groupId);
-  console.log(group);
   const user = useSelector((state) => state.auth.user);
   const [modal, setModal] = useState(false);
   const [currentMessage, setCurrentMessage] = useState("");
@@ -43,7 +42,7 @@ const GroupPage = () => {
       console.log(messageList);
       setMessageList((list) => [...list, data]);
     });
-  }, [dispatch, socket]);
+  }, [dispatch, messageList]);
 
   const sendMessage = async () => {
     if (currentMessage !== "") {
@@ -83,21 +82,44 @@ const GroupPage = () => {
     return members;
   };
 
+  const onClickBack = () => {
+    const data = {
+      username: user.username.split("@")[0],
+      room: groupId,
+    };
+
+    socket.emit("leave", data);
+    navigate("/userPage");
+  };
+
   return (
     <div className="is-flex is-justify-content-center">
       <Box style={{ width: "50rem", marginTop: "5rem" }}>
         <Columns>
           <Column size="two-fifths">
             <Title size="5">{group.name}-Members</Title>
-            <Button
-              color="primary"
-              rounded
-              size="small"
-              className="mb-4"
-              onClick={openModal}
-            >
-              +
-            </Button>
+            <Buttons>
+              <Button
+                color="primary"
+                rounded
+                size="small"
+                className="mb-4"
+                onClick={openModal}
+              >
+                +
+              </Button>
+              <Button
+                size="small"
+                color="primary"
+                rounded
+                className="mb-4 is-justify-content-space-between"
+                onClick={onClickBack}
+              >
+                <FontAwesomeIcon icon={faArrowLeft} />
+                Back
+              </Button>
+            </Buttons>
+
             <Panel>
               {getGroupMembers().map((member, index) => {
                 return (

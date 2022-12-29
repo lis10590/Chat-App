@@ -52,6 +52,7 @@ def on_leave(data):
     username = data['username']
     room = data['room']
     leave_room(room)
+    print(username + ' has left the room ' + room)
     send(username + ' has left the room.', to=room)
 
 
