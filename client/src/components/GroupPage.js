@@ -20,6 +20,7 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import AddMember from "./AddMember";
 import { socket } from "../api/socket";
 import ScrollToBottom from "react-scroll-to-bottom";
+import { messageAddition } from "../store/messages";
 import "../styles/Chat.css";
 
 const GroupPage = () => {
@@ -55,7 +56,14 @@ const GroupPage = () => {
           ":" +
           new Date(Date.now()).getMinutes(),
       };
-
+      const obj = {
+        room: groupId,
+        author: user.username,
+        message: currentMessage,
+        date: Date.now(),
+        destination: groupId,
+      };
+      dispatch(messageAddition(obj));
       await socket.emit("message", messageData);
       // setMessageList((list) => [...list, messageData]);
       setCurrentMessage("");

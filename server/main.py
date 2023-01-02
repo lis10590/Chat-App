@@ -9,6 +9,7 @@ from routers.users_router import users
 from routers.registered_router import registered
 from routers.groups_router import groups
 from routers.auth_router import auth
+from routers.messages_router import messages
 from flask_jwt_extended import JWTManager
 
 
@@ -74,5 +75,6 @@ app.register_blueprint(users, url_prefix="/users")
 app.register_blueprint(registered, url_prefix="/registered")
 app.register_blueprint(groups, url_prefix="/groups")
 app.register_blueprint(auth, url_prefix="/auth")
+app.register_blueprint(messages, url_prefix="/messages")
 
 socketio.run(app)

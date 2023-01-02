@@ -12,10 +12,10 @@ class MessagesDal:
         messages = list(self.__collection.find({}))
         return messages
 
-    def get_messages_by_username(self, username):
-        messages = self.__collection.find_one({"username": username})
+    def get_all_messages_by_username(self, username):
+        messages = list(self.__collection.find({"username": username}))
         return messages
 
     def add_message(self, obj):
-        self.__collection.update_one({"_id": ObjectId(obj["id"])}, {
-                                     "$push": {"history":  obj["user"]}})
+        self.__collection.update_one({"username": obj["author"]}, {
+                                     "$push": {"history": {"message": obj["message"], "date": obj["date"], "destination": obj["destination"]}}})
