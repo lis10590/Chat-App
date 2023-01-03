@@ -17,5 +17,8 @@ class MessagesDal:
         return messages
 
     def add_message(self, obj):
-        self.__collection.update_one({"username": obj["author"]}, {
-                                     "$push": {"history": {"message": obj["message"], "date": obj["date"], "destination": obj["destination"]}}})
+        self.__collection.insert_one(
+            {"author": obj["author"], "message": obj["message"], "date": obj["date"], "destination": obj["destination"]})
+
+        messages = list(self.__collection.find({}))
+        return messages

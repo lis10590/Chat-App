@@ -58,7 +58,7 @@ const GroupPage = () => {
       };
       const obj = {
         room: groupId,
-        author: user.username,
+        author: user._id,
         message: currentMessage,
         date: Date.now(),
         destination: groupId,

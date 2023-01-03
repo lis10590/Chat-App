@@ -34,8 +34,7 @@ const ChatBox = (props) => {
       };
 
       const obj = {
-        room: props.room,
-        author: user.username,
+        author: user._id,
         message: currentMessage,
         date: Date.now(),
         destination: props.id,
@@ -59,61 +58,55 @@ const ChatBox = (props) => {
   }, [props.socket]);
 
   const arrangeMessages = () => {
-    let authorMessages = [];
-    let destinationMessages = [];
-    let username = "";
-
-    for (const message of messages) {
-      if (message.username === user.username) {
-        for (const item of message.history) {
-          if (item.destination === props.id) {
-            authorMessages.push(item);
-          }
-        }
-      }
-    }
+    let messagesArr = [];
+    let destination = "";
     for (const item of users) {
       if (item._id === props.id) {
-        username = item.username;
+        destination = item.username;
       }
     }
-
     for (const message of messages) {
-      if (message.username === username) {
-        for (const item of message.history) {
-          if (item.destination === user._id) {
-            destinationMessages.push(item);
-          }
-        }
+      if (message.author === user._id) {
+        const obj = {
+          author: user.username,
+          message: message.message,
+          destination: destination,
+          date: message.date,
+        };
+        messagesArr.push(obj);
+      }
+      if (message.author === props.id) {
+        const obj = {
+          author: destination,
+          message: message.message,
+          destination: user.username,
+          date: message.date,
+        };
+        messagesArr.push(obj);
       }
     }
-
-    console.log(authorMessages);
-    console.log(destinationMessages);
+    console.log(messagesArr);
+    return messagesArr.sort((a, b) => a.date - b.date);
   };
-  arrangeMessages();
+
   return (
     <Box className="chat-window">
       <Container className="chat-body">
         <ScrollToBottom>
-          {messageList.map((messageContent, index) => {
+          {arrangeMessages().map((messageContent, index) => {
             return (
               <div
                 key={index}
                 className="message"
-                id={
-                  user.username.split("@")[0] === messageContent.author
-                    ? "you"
-                    : "other"
-                }
+                id={user.username === messageContent.author ? "you" : "other"}
               >
                 <div>
                   <div className="message-content">
                     <p>{messageContent.message}</p>
                   </div>
                   <div className="message-meta">
-                    <p id="time">{messageContent.time}</p>
-                    <p id="author">{messageContent.author}</p>
+                    <p id="time">{messageContent.date}</p>
+                    <p id="author">{messageContent.author.split("@")[0]}</p>
                   </div>
                 </div>
               </div>
