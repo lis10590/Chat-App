@@ -37,3 +37,17 @@ def update_room():
     user = request.json
     result = users_bl.update_rooms(user)
     return jsonify(result)
+
+
+@users.route("/addBlocked", methods=['PUT'])
+def add_to_blocked():
+    user = request.json
+    result = users_bl.add_blocked(user)
+    return jsonify(result)
+
+
+@users.route("/removeBlocked", methods=['PUT'])
+def remove_from_blocked():
+    user = request.json
+    result = users_bl.remove_blocked(user)
+    return jsonify(result)

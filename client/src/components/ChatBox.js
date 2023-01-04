@@ -55,7 +55,7 @@ const ChatBox = (props) => {
     });
     dispatch(getAllMessages());
     dispatch(getAllUsers());
-  }, [props.socket]);
+  }, [props.socket, dispatch, messageList]);
 
   const arrangeMessages = () => {
     let messagesArr = [];
@@ -66,7 +66,7 @@ const ChatBox = (props) => {
       }
     }
     for (const message of messages) {
-      if (message.author === user._id) {
+      if (message.author === user._id && message.destination === props.id) {
         const obj = {
           author: user.username,
           message: message.message,
@@ -105,7 +105,11 @@ const ChatBox = (props) => {
                     <p>{messageContent.message}</p>
                   </div>
                   <div className="message-meta">
-                    <p id="time">{messageContent.date}</p>
+                    <p id="time">
+                      {new Date(messageContent.date).getHours() +
+                        ":" +
+                        new Date(messageContent.date).getMinutes()}
+                    </p>
                     <p id="author">{messageContent.author.split("@")[0]}</p>
                   </div>
                 </div>

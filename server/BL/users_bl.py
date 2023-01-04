@@ -24,3 +24,11 @@ class UsersBL:
     def update_profile_pic(self, user):
         users = self.__users_dal.update_profile_pic(user)
         return users
+
+    def add_blocked(self, user):
+        users = self.__users_dal.add_to_blocked(user)
+        return users
+
+    def remove_blocked(self, user):
+        users = self.__users_dal.remove_from_blocked(user)
+        return users

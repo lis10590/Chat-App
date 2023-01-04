@@ -4,6 +4,7 @@ import regUsersReducer from "./registered";
 import groupsReducer from "./groups";
 import authReducer from "./auth";
 import messagesReducer from "./messages";
+import blockedReducer from "./blocked";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     groups: groupsReducer,
     auth: authReducer,
     messages: messagesReducer,
+    blocked: blockedReducer,
   },
 });
 

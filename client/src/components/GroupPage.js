@@ -20,7 +20,11 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import AddMember from "./AddMember";
 import { socket } from "../api/socket";
 import ScrollToBottom from "react-scroll-to-bottom";
-import { messageAddition } from "../store/messages";
+import {
+  messageAddition,
+  getAllMessages,
+  selectAllMessages,
+} from "../store/messages";
 import "../styles/Chat.css";
 
 const GroupPage = () => {
@@ -29,6 +33,7 @@ const GroupPage = () => {
   const navigate = useNavigate();
   const groups = useSelector(selectAllGroups);
   const users = useSelector(selectAllUsers);
+  const messages = useSelector(selectAllMessages);
   let [group] = groups.filter((group) => group._id === groupId);
   const user = useSelector((state) => state.auth.user);
   const [modal, setModal] = useState(false);
@@ -38,6 +43,7 @@ const GroupPage = () => {
   useEffect(() => {
     dispatch(getAllGroups());
     dispatch(getAllUsers());
+    dispatch(getAllMessages());
     socket.on("message", (data) => {
       console.log(data);
       console.log(messageList);
@@ -100,6 +106,35 @@ const GroupPage = () => {
     navigate("/userPage");
   };
 
+  const arrangeMessages = () => {
+    let messagesArr = [];
+    let finalArr = [];
+    for (const message of messages) {
+      if (message.destination === groupId) {
+        messagesArr.push(message);
+      }
+    }
+
+    for (const item of users) {
+      for (const message of messagesArr) {
+        if (message.author === item._id) {
+          const obj = {
+            author: item.username,
+            message: message.message,
+            date: message.date,
+          };
+
+          finalArr.push(obj);
+        }
+      }
+    }
+
+    console.log(finalArr);
+    return finalArr;
+  };
+
+  arrangeMessages();
+
   return (
     <div className="is-flex is-justify-content-center">
       <Box style={{ width: "50rem", marginTop: "5rem" }}>
@@ -144,13 +179,13 @@ const GroupPage = () => {
             <Box className="chat-window">
               <Container className="chat-body">
                 <ScrollToBottom>
-                  {messageList.map((messageContent, index) => {
+                  {arrangeMessages().map((messageContent, index) => {
                     return (
                       <div
                         key={index}
                         className="message"
                         id={
-                          user.username.split("@")[0] === messageContent.author
+                          user.username === messageContent.author
                             ? "you"
                             : "other"
                         }
@@ -160,8 +195,14 @@ const GroupPage = () => {
                             <p>{messageContent.message}</p>
                           </div>
                           <div className="message-meta">
-                            <p id="time">{messageContent.time}</p>
-                            <p id="author">{messageContent.author}</p>
+                            <p id="time">
+                              {new Date(messageContent.date).getHours() +
+                                ":" +
+                                new Date(messageContent.date).getMinutes()}
+                            </p>
+                            <p id="author">
+                              {messageContent.author.split("@")[0]}
+                            </p>
                           </div>
                         </div>
                       </div>

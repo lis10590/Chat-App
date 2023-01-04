@@ -1,5 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getUsers, addNewUser, deleteUser } from "../api/users";
+import {
+  getUsers,
+  addNewUser,
+  deleteUser,
+  addToBlocked,
+  removeFromBlocked,
+} from "../api/users";
 
 const initialUsersState = {
   users: [],
@@ -62,6 +68,39 @@ export const deleteOneUser = createAsyncThunk(
   }
 );
 
+export const addBlocked = createAsyncThunk(
+  "users/addBlocked",
+  async (user, thunkAPI) => {
+    try {
+      return await addToBlocked(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+export const removeBlocked = createAsyncThunk(
+  "users/removeBlocked",
+  async (user, thunkAPI) => {
+    try {
+      return await removeFromBlocked(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const usersSlice = createSlice({
   name: "users",
   initialState: initialUsersState,
@@ -111,6 +150,35 @@ const usersSlice = createSlice({
       })
 
       .addCase(deleteOneUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(addBlocked.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(addBlocked.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload;
+      })
+
+      .addCase(addBlocked.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+
+      .addCase(removeBlocked.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(removeBlocked.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload;
+      })
+
+      .addCase(removeBlocked.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

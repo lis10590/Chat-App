@@ -19,7 +19,7 @@ class UsersDal:
 
     def add_new_user(self, user):
         self.__collection.insert_one(
-            {"username": user["username"], "password": user["password"], "rooms": [], "profile_pic": "https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"})
+            {"username": user["username"], "password": user["password"], "rooms": [], "contacts": [], "blocked": [], "profile_pic": "https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"})
         username = user["username"]
         rooms = user["rooms"]
         users = list(self.__collection.find({}))
@@ -40,5 +40,19 @@ class UsersDal:
     def update_profile_pic(self, user):
         self.__collection.update_one({"_id": ObjectId(user["id"])}, {
             "$push": {"profile_pic": user["profile_pic"]}})
+        users = list(self.__collection.find({}))
+        return users
+
+    def add_to_blocked(self, user):
+        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
+            "$push": {"blocked": user["block"]}
+        })
+        users = list(self.__collection.find({}))
+        return users
+
+    def remove_from_blocked(self, user):
+        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
+            "$pull": {"blocked": user["block"]}
+        })
         users = list(self.__collection.find({}))
         return users

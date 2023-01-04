@@ -36,3 +36,21 @@ export const deleteUser = async (username) => {
     console.error(err);
   }
 };
+
+export const addToBlocked = async (user) => {
+  try {
+    const res = await axios.put(`${apiUrl}/users/addBlocked`, user);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const removeFromBlocked = async (user) => {
+  try {
+    const res = await axios.put(`${apiUrl}/users/removeBlocked`, user);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
