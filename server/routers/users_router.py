@@ -51,3 +51,17 @@ def remove_from_blocked():
     user = request.json
     result = users_bl.remove_blocked(user)
     return jsonify(result)
+
+
+@users.route("/addContact", methods=['PUT'])
+def add_contact():
+    user = request.json
+    result = users_bl.add_new_contact(user)
+    return jsonify(result)
+
+
+@users.route("/getContacts", methods=['GET'])
+def get_contacts():
+    id = request.json["id"]
+    result = users_bl.get_all_contacts(id)
+    return jsonify(result)

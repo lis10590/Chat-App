@@ -18,12 +18,14 @@ const PrivateChat = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = useSelector(selectAllUsers);
-  const blocked = useSelector((state) => state.blocked.blocked);
+  console.log(users);
   let { userId } = useParams();
   console.log(userId);
   let [user] = users.filter((user) => user._id === userId);
   const username = useSelector((state) => state.auth.user);
   const [block, setBlock] = useState(false);
+  const [currentUser] = username.blocked.filter((item) => item.id === userId);
+  console.log(currentUser);
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -43,14 +45,23 @@ const PrivateChat = () => {
     setBlock(!block);
     const obj = {
       id: username._id,
-      block: userId,
+      contactId: userId,
     };
-    if (block) {
-      dispatch(removeBlocked(obj));
-      dispatch(blockedActions.removeBlocked(userId));
-    } else {
-      dispatch(addBlocked(obj));
-      dispatch(blockedActions.addBlocked(userId));
+
+    for (const item of users) {
+      if (item.username === username.username) {
+        console.log(item.username);
+        for (const item2 of item.blocked) {
+          if (item2.id === userId) {
+            console.log(item2);
+            if (item2.blocked) {
+              dispatch(removeBlocked(obj));
+            } else {
+              dispatch(addBlocked(obj));
+            }
+          }
+        }
+      }
     }
   };
 
@@ -81,7 +92,7 @@ const PrivateChat = () => {
               onClick={onBlock}
             >
               <FontAwesomeIcon icon={faBan} />
-              {block ? "UnBlock" : "Block"}
+              {currentUser.blocked ? "UnBlock" : "Block"}
             </Button>
           </Buttons>
         </Card.Header>

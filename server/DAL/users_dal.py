@@ -44,15 +44,29 @@ class UsersDal:
         return users
 
     def add_to_blocked(self, user):
-        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
-            "$push": {"blocked": user["block"]}
-        })
+        self.__collection.update_one({"_id": ObjectId(
+            user["id"]), "blocked.id": user["contactId"]}, {"$set": {"blocked.$.blocked": True}})
         users = list(self.__collection.find({}))
         return users
 
     def remove_from_blocked(self, user):
-        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
-            "$pull": {"blocked": user["block"]}
-        })
+        self.__collection.update_one({"_id": ObjectId(user["id"]), "blocked.id": user["contactId"]},  {
+                                     "$set": {"blocked.$.blocked": False}})
         users = list(self.__collection.find({}))
         return users
+
+    def add_contact(self, user):
+        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
+            "$push": {"contacts": user["contact"]}
+        })
+
+        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
+            "$push": {"blocked": user["blocked"]}
+        })
+
+        users = list(self.__collection.find({}))
+        return users
+
+    def get_contacts(self, id):
+        users = self.__collection.find_one({"_id": ObjectId(id)})
+        return users["contacts"]

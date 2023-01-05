@@ -5,6 +5,7 @@ import {
   deleteUser,
   addToBlocked,
   removeFromBlocked,
+  addContact,
 } from "../api/users";
 
 const initialUsersState = {
@@ -84,11 +85,29 @@ export const addBlocked = createAsyncThunk(
     }
   }
 );
+
 export const removeBlocked = createAsyncThunk(
   "users/removeBlocked",
   async (user, thunkAPI) => {
     try {
       return await removeFromBlocked(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const addNewContact = createAsyncThunk(
+  "users/addContact",
+  async (user, thunkAPI) => {
+    try {
+      return await addContact(user);
     } catch (error) {
       const message =
         (error.response &&
@@ -179,6 +198,20 @@ const usersSlice = createSlice({
       })
 
       .addCase(removeBlocked.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(addNewContact.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(addNewContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload;
+      })
+
+      .addCase(addNewContact.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

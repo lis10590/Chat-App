@@ -32,3 +32,11 @@ class UsersBL:
     def remove_blocked(self, user):
         users = self.__users_dal.remove_from_blocked(user)
         return users
+
+    def add_new_contact(self, user):
+        users = self.__users_dal.add_contact(user)
+        return users
+
+    def get_all_contacts(self, id):
+        users = self.__users_dal.get_contacts(id)
+        return users

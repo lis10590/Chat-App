@@ -54,3 +54,12 @@ export const removeFromBlocked = async (user) => {
     console.error(err);
   }
 };
+
+export const addContact = async (user) => {
+  try {
+    const res = await axios.put(`${apiUrl}/users/addContact`, user);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
