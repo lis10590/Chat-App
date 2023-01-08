@@ -5,7 +5,6 @@ import {
   addBlocked,
   removeBlocked,
 } from "../store/users";
-import { blockedActions } from "../store/blocked";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -65,13 +64,31 @@ const PrivateChat = () => {
     }
   };
 
+  const findUser = () => {
+    let blockedArr = [];
+    for (const item of users) {
+      if (item.username === username.username) {
+        blockedArr = item.blocked;
+      }
+      for (const item2 of blockedArr) {
+        if (item2.id === userId) {
+          return item2;
+        }
+      }
+    }
+  };
   return (
     <div className="is-flex is-justify-content-center">
       <Card style={{ width: "50rem", marginTop: "5rem" }}>
         <Card.Header className="is-justify-content-space-between">
           <div className="ml-4">
             <img src={user.profile_pic} style={{ height: "4rem" }} />
-            <div>{user.username}</div>
+            <div>
+              {user.username}{" "}
+              {findUser().blocked ? (
+                <FontAwesomeIcon icon={faBan} style={{ color: "red" }} />
+              ) : null}
+            </div>
           </div>
           <Buttons>
             <Button
@@ -92,7 +109,7 @@ const PrivateChat = () => {
               onClick={onBlock}
             >
               <FontAwesomeIcon icon={faBan} />
-              {currentUser.blocked ? "UnBlock" : "Block"}
+              {findUser().blocked ? "UnBlock" : "Block"}
             </Button>
           </Buttons>
         </Card.Header>

@@ -28,9 +28,34 @@ const Chats = () => {
     navigate(`/chats/${userId}`);
   };
 
+  const getContacts = () => {
+    let contactsArr = [];
+    let contactsFinal = [];
+    for (const item of users) {
+      if (item.username === user.username) {
+        contactsArr = item.contacts;
+      }
+    }
+
+    for (const item of users) {
+      for (const contact of contactsArr) {
+        if (contact === item._id) {
+          const obj = {
+            _id: contact,
+            username: item.username,
+            profile_pic: item.profile_pic,
+          };
+
+          contactsFinal.push(obj);
+        }
+      }
+    }
+    return contactsFinal;
+  };
+
   return (
     <Panel>
-      {users.map((user) => {
+      {getContacts().map((user) => {
         userId = user._id;
         return (
           <Panel.Block

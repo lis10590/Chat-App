@@ -70,3 +70,10 @@ class UsersDal:
     def get_contacts(self, id):
         users = self.__collection.find_one({"_id": ObjectId(id)})
         return users["contacts"]
+
+    def add_group(self, user):
+        self.__collection.update_one({"_id": ObjectId(user["id"])}, {
+            "$push": {"groups": user["group"]}
+        })
+        users = list(self.__collection.find({}))
+        return users

@@ -39,13 +39,39 @@ const Groups = () => {
     navigate(`/groups/${groupId}`);
   };
 
+  const findGroups = () => {
+    let groupsArr = [];
+    let finalArr = [];
+    for (const item of users) {
+      if (item.username === user.username) {
+        groupsArr = item.groups;
+      }
+    }
+
+    for (const group of groups) {
+      for (const item of groupsArr) {
+        if (group._id === item) {
+          const obj = {
+            _id: group._id,
+            name: group.name,
+            members: group.members,
+            profile_pic: group.profile_pic,
+          };
+
+          finalArr.push(obj);
+        }
+      }
+    }
+    return finalArr;
+  };
+
   return (
     <div>
       <Button className="mb-6 mt-4" color="primary" rounded onClick={openModal}>
         +
       </Button>
       <Panel>
-        {groups.map((group) => {
+        {findGroups().map((group) => {
           groupId = group._id;
           return (
             <Panel.Block
