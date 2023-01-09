@@ -176,7 +176,7 @@ const GroupPage = () => {
           </Column>
 
           <Column className="is-flex is-flex-direction-column is-justify-content-flex-end is-align-content-stretch">
-            <Box className="chat-window">
+            <Box className="chat-window" style={{ width: "28rem" }}>
               <Container className="chat-body">
                 <ScrollToBottom>
                   {arrangeMessages().map((messageContent, index) => {

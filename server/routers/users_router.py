@@ -65,3 +65,10 @@ def get_contacts():
     id = request.json["id"]
     result = users_bl.get_all_contacts(id)
     return jsonify(result)
+
+
+@users.route("/addGroup", methods=['PUT'])
+def add_group():
+    obj = request.json
+    result = users_bl.add_group_to_user(obj)
+    return jsonify(result)

@@ -12,8 +12,7 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import { getAllUsers, selectAllUsers } from "../store/users";
-import { groupAddition } from "../store/groups";
+import { getAllUsers, selectAllUsers, addNewGroup } from "../store/users";
 import { useDispatch, useSelector } from "react-redux";
 
 const AddGroup = (props) => {
@@ -25,6 +24,7 @@ const AddGroup = (props) => {
 
   const dispatch = useDispatch();
   const users = useSelector(selectAllUsers);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
     dispatch(getAllUsers());
@@ -64,9 +64,10 @@ const AddGroup = (props) => {
     const obj = {
       name: groupName,
       members: ids,
+      userId: user._id,
     };
 
-    dispatch(groupAddition(obj));
+    dispatch(addNewGroup(obj));
     props.onDelete();
   };
 

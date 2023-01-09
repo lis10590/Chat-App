@@ -6,6 +6,7 @@ import {
   addToBlocked,
   removeFromBlocked,
   addContact,
+  addGroup,
 } from "../api/users";
 
 const initialUsersState = {
@@ -120,6 +121,23 @@ export const addNewContact = createAsyncThunk(
   }
 );
 
+export const addNewGroup = createAsyncThunk(
+  "users/addGroup",
+  async (user, thunkAPI) => {
+    try {
+      return await addGroup(user);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 const usersSlice = createSlice({
   name: "users",
   initialState: initialUsersState,
@@ -212,6 +230,20 @@ const usersSlice = createSlice({
       })
 
       .addCase(addNewContact.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(addNewGroup.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(addNewGroup.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload;
+      })
+
+      .addCase(addNewGroup.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;

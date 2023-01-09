@@ -63,3 +63,12 @@ export const addContact = async (user) => {
     console.error(err);
   }
 };
+
+export const addGroup = async (user) => {
+  try {
+    const res = await axios.put(`${apiUrl}/users/addGroup`, user);
+    return res.data;
+  } catch (err) {
+    console.error(err);
+  }
+};

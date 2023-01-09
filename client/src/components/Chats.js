@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllUsers, selectAllUsers } from "../store/users";
 import { useParams, useNavigate } from "react-router-dom";
 import { socket } from "../api/socket";
+import AddContact from "./AddContact";
 
 const Chats = () => {
   const dispatch = useDispatch();
@@ -82,6 +83,7 @@ const Chats = () => {
           );
         })}
       </Panel>
+      <AddContact modal={modal} onDelete={onClickDelete} />
     </div>
   );
 };

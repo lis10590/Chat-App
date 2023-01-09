@@ -1,9 +1,11 @@
 from DAL.users_dal import *
+from DAL.groups_dal import *
 
 
 class UsersBL:
     def __init__(self):
         self.__users_dal = UsersDal()
+        self.__groups_dal = GroupsDal()
 
     def get_users(self):
         users = self.__users_dal.get_all_users()
@@ -39,4 +41,16 @@ class UsersBL:
 
     def get_all_contacts(self, id):
         users = self.__users_dal.get_contacts(id)
+        return users
+
+    def add_group_to_user(self, obj):
+        groups = self.__groups_dal.add_new_group(obj)
+        for group in groups:
+            if group["name"] == obj["name"]:
+                id = str(group["_id"])
+        user = {}
+        user["group"] = id
+        user["id"] = obj["userId"]
+
+        users = self.__users_dal.add_group(user)
         return users
