@@ -40,6 +40,24 @@ const PrivateChat = () => {
     navigate("/userPage");
   };
 
+  const onLeaveRoom = () => {
+    const data = {
+      username: username.username.split("@")[0],
+      room: user.username,
+    };
+
+    socket.emit("leave", data);
+  };
+
+  const onJoinRoom = () => {
+    const data = {
+      username: username.username.split("@")[0],
+      room: user.username,
+    };
+
+    socket.emit("join", data);
+  };
+
   const onBlock = () => {
     setBlock(!block);
     const obj = {
@@ -55,8 +73,10 @@ const PrivateChat = () => {
             console.log(item2);
             if (item2.blocked) {
               dispatch(removeBlocked(obj));
+              onJoinRoom();
             } else {
               dispatch(addBlocked(obj));
+              onLeaveRoom();
             }
           }
         }

@@ -52,7 +52,10 @@ const LoginPage = () => {
 
   return (
     <div className="mt-6">
-      <Title className="is-flex is-justify-content-center">
+      <Title
+        className="is-flex is-justify-content-center"
+        style={{ fontFamily: "Lilita One, cursive" }}
+      >
         Chat App Login
       </Title>
       <Box

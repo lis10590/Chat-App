@@ -6,7 +6,7 @@ export const registerUser = async (user) => {
   try {
     const res = await axios.post(`${apiUrl}/auth/register`, user);
     sessionStorage.setItem("token", res.data.token);
-    sessionStorage.setItem("user", res.data.user);
+
     return res.data;
   } catch (err) {
     console.error(err);
@@ -17,7 +17,8 @@ export const loginUser = async (user) => {
   try {
     const res = await axios.post(`${apiUrl}/auth/login`, user);
     sessionStorage.setItem("token", res.data.token);
-    sessionStorage.setItem("user", res.data.user);
+    sessionStorage.setItem("user", user.username);
+
     return res.data;
   } catch (err) {
     console.error(err);

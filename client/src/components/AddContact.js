@@ -40,7 +40,15 @@ const AddContact = (props) => {
     setFilteredData([]);
   };
 
-  const onAddContact = () => {};
+  const onAddContact = () => {
+    const obj = {
+      id: user._id,
+      contact: email,
+    };
+
+    dispatch(addNewContact(obj));
+    props.onDelete();
+  };
 
   return (
     <Modal active={props.modal ? true : false}>

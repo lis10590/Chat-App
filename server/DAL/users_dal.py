@@ -56,12 +56,29 @@ class UsersDal:
         return users
 
     def add_contact(self, user):
+        contact = self.__collection.find_one({"username": user["contact"]})
         self.__collection.update_one({"_id": ObjectId(user["id"])}, {
-            "$push": {"contacts": user["contact"]}
+            "$push": {"contacts": str(contact["_id"])}
         })
 
+        obj = {}
+        obj["id"] = str(contact["_id"])
+        obj["blocked"] = False
+
         self.__collection.update_one({"_id": ObjectId(user["id"])}, {
-            "$push": {"blocked": user["blocked"]}
+            "$push": {"blocked": obj}
+        })
+
+        self.__collection.update_one({"_id": contact["_id"]}, {
+            "$push": {"contacts": user["id"]}
+        })
+
+        obj2 = {}
+        obj2["id"] = user["id"]
+        obj2["blocked"] = False
+
+        self.__collection.update_one({"_id": contact["_id"]}, {
+            "$push": {"blocked": obj2}
         })
 
         users = list(self.__collection.find({}))
