@@ -137,3 +137,7 @@
   .hide {
     opacity: 0 !important;
   }
+
+  .scroller {
+    height: 37rem;
+  }

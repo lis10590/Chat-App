@@ -130,10 +130,8 @@ const GroupPage = () => {
     }
 
     console.log(finalArr);
-    return finalArr;
+    return finalArr.sort((a, b) => a.date - b.date);
   };
-
-  arrangeMessages();
 
   return (
     <div className="is-flex is-justify-content-center">
@@ -178,7 +176,7 @@ const GroupPage = () => {
           <Column className="is-flex is-flex-direction-column is-justify-content-flex-end is-align-content-stretch">
             <Box className="chat-window" style={{ width: "28rem" }}>
               <Container className="chat-body">
-                <ScrollToBottom>
+                <ScrollToBottom className="scroller">
                   {arrangeMessages().map((messageContent, index) => {
                     return (
                       <div

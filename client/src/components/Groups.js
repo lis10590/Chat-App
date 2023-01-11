@@ -36,7 +36,8 @@ const Groups = () => {
     };
 
     socket.emit("join", data);
-    navigate(`/groups/${groupId}`);
+
+    navigate(`/groups/${id}`);
   };
 
   const findGroups = () => {
@@ -62,6 +63,7 @@ const Groups = () => {
         }
       }
     }
+    console.log(finalArr);
     return finalArr;
   };
 
@@ -73,6 +75,7 @@ const Groups = () => {
       <Panel>
         {findGroups().map((group) => {
           groupId = group._id;
+          console.log(groupId);
           return (
             <Panel.Block
               key={group._id}

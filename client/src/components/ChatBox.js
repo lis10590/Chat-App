@@ -92,7 +92,7 @@ const ChatBox = (props) => {
   return (
     <Box className="chat-window">
       <Container className="chat-body">
-        <ScrollToBottom>
+        <ScrollToBottom className="scroller">
           {arrangeMessages().map((messageContent, index) => {
             return (
               <div
