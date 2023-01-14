@@ -6,7 +6,6 @@ from flask_socketio import SocketIO
 from flask_socketio import join_room, leave_room
 from flask_socketio import send, emit
 from routers.users_router import users
-from routers.registered_router import registered
 from routers.groups_router import groups
 from routers.auth_router import auth
 from routers.messages_router import messages
@@ -65,14 +64,10 @@ def handle_message(data):
     print(data)
 
 
-@socketio.on("chatroom_users")
-def chatroom_room(data):
-    emit("chatroom_users", data)
 
 
 # app.run()
 app.register_blueprint(users, url_prefix="/users")
-app.register_blueprint(registered, url_prefix="/registered")
 app.register_blueprint(groups, url_prefix="/groups")
 app.register_blueprint(auth, url_prefix="/auth")
 app.register_blueprint(messages, url_prefix="/messages")
