@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from BL.users_bl import UsersBL
+from flask_cors import cross_origin
 
 
 users = Blueprint('users', __name__)
@@ -8,6 +9,7 @@ users_bl = UsersBL()
 
 
 @users.route("/getUsers", methods=['GET'])
+@cross_origin()
 def get_all_users():
     users = users_bl.get_users()
     result = {"users": users}
@@ -15,6 +17,7 @@ def get_all_users():
 
 
 @users.route("/newUser", methods=['POST'])
+@cross_origin()
 def add_user():
     user = request.json
     result = users_bl.add_new_user(user)
@@ -26,6 +29,7 @@ def add_user():
 
 
 @users.route("/deleteUser", methods=['DELETE'])
+@cross_origin()
 def delete_user():
     username = request.json["username"]
     result = users_bl.delete_user(username)
@@ -33,6 +37,7 @@ def delete_user():
 
 
 @users.route("/updateRoom", methods=['PUT'])
+@cross_origin()
 def update_room():
     user = request.json
     result = users_bl.update_rooms(user)
@@ -40,6 +45,7 @@ def update_room():
 
 
 @users.route("/addBlocked", methods=['PUT'])
+@cross_origin()
 def add_to_blocked():
     user = request.json
     result = users_bl.add_blocked(user)
@@ -47,6 +53,7 @@ def add_to_blocked():
 
 
 @users.route("/removeBlocked", methods=['PUT'])
+@cross_origin()
 def remove_from_blocked():
     user = request.json
     result = users_bl.remove_blocked(user)
@@ -54,6 +61,7 @@ def remove_from_blocked():
 
 
 @users.route("/addContact", methods=['PUT'])
+@cross_origin()
 def add_contact():
     user = request.json
     result = users_bl.add_new_contact(user)
@@ -61,6 +69,7 @@ def add_contact():
 
 
 @users.route("/getContacts", methods=['GET'])
+@cross_origin()
 def get_contacts():
     id = request.json["id"]
     result = users_bl.get_all_contacts(id)
@@ -68,6 +77,7 @@ def get_contacts():
 
 
 @users.route("/addGroup", methods=['PUT'])
+@cross_origin()
 def add_group():
     obj = request.json
     result = users_bl.add_group_to_user(obj)
