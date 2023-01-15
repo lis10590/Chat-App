@@ -8,3 +8,4 @@ Gunicorn
 eventlet
 gevent
 python-dotenv==0.21.0
+dnspython==2.2.1
