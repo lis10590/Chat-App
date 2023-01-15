@@ -3,13 +3,15 @@ from pymongo import MongoClient
 from bson import ObjectId
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
-from flask_jwt_extended import decode_token
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class AuthDal:
     def __init__(self):
-        self.__client = MongoClient(port=27017)
-        self.__db = self.__client["chat-app"]
+        self.__client = MongoClient(os.environ.get("MONGO_DB_URI"))
+        self.__db = self.__client["Chat-App"]
         self.__collection = self.__db["Users"]
 
     def register_user(self, username, password):
