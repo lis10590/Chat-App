@@ -10,6 +10,9 @@ from routers.groups_router import groups
 from routers.auth_router import auth
 from routers.messages_router import messages
 from flask_jwt_extended import JWTManager
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -22,7 +25,7 @@ class JSONEncoder(json.JSONEncoder):
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 jwt = JWTManager(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(app, cors_allowed_origins=os.environ.get("ORIGIN"))
 CORS(app)
 
 app.json_encoder = JSONEncoder
