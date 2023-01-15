@@ -25,7 +25,7 @@ class JSONEncoder(json.JSONEncoder):
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 jwt = JWTManager(app)
-socketio = SocketIO(app, "*")
+socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app,origins=os.environ.get("ORIGIN"))
 
 
