@@ -26,7 +26,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 jwt = JWTManager(app)
 socketio = SocketIO(app, cors_allowed_origins=os.environ.get("ORIGIN"))
-CORS(app)
+CORS(app,origins=os.environ.get("ORIGIN"))
 
 app.json_encoder = JSONEncoder
 
