@@ -5,7 +5,7 @@ Flask_SocketIO==5.3.2
 pymongo==4.2.0
 requests==2.28.1
 Gunicorn
-eventlet
+eventlet==0.30.2
 gevent
 python-dotenv==0.21.0
 dnspython
