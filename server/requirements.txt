@@ -4,8 +4,8 @@ Flask_JWT_Extended==4.4.4
 Flask_SocketIO==5.3.2
 pymongo==4.2.0
 requests==2.28.1
-Gunicorn
-eventlet==0.33.0
+Gunicorn==20.1.0
+eventlet==0.30.2
 gevent
 python-dotenv==0.21.0
 dnspython==2.2.1
