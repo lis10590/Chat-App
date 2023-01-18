@@ -8,7 +8,7 @@ Gunicorn
 eventlet==0.30.2
 gevent
 python-dotenv==0.21.0
-dnspython
+dnspython==2.2.1
 waitress==2.1.2
 gevent-websocket==0.10.1
 h11==0.14.0
