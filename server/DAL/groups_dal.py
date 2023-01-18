@@ -8,7 +8,7 @@ load_dotenv()
 
 class GroupsDal:
     def __init__(self):
-        self.__client = MongoClient(os.environ.get("MONGO_DB_URI"))
+        self.__client = MongoClient(os.environ.get("MONGO_DB_URI"),connect=False)
         self.__db = self.__client["Chat-App"]
         self.__collection = self.__db["Groups"]
 
