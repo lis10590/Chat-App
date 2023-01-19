@@ -1,4 +1,6 @@
 import requests
+from gevent import monkey
+_ = monkey.patch_all()
 from pymongo import MongoClient
 from bson import ObjectId
 from flask_jwt_extended import create_access_token
