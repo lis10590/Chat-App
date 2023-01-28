@@ -61,7 +61,6 @@ const LoginPage = () => {
       <Box
         style={{
           width: "20rem",
-          marginTop: "2rem",
           marginLeft: "auto",
           marginRight: "auto",
         }}
